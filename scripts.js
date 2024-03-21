@@ -83,6 +83,7 @@ const heightRangeIn = [
 
 const legs = document.getElementById("desk__legs");
 const deskTop = document.getElementById("desk__top");
+const unitLabel = document.getElementById("unit");
 const input = document.getElementById("height");
 const inputIn = document.getElementById("height-in");
 const indicator = document.getElementById("indicator");
@@ -100,10 +101,12 @@ document.getElementById("units").addEventListener("change", (e) => {
     showDeskHeight(input.value, type, units);
     inputIn.style.display = "none";
     input.style.display = "block";
+    unitLabel.innerHTML = "cm";
   } else {
     showDeskHeight(inputIn.value, type, units);
     inputIn.style.display = "block";
     input.style.display = "none";
+    unitLabel.innerHTML = "inches";
   }
 });
 
