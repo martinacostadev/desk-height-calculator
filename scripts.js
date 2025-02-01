@@ -95,6 +95,117 @@ let maxHeight = 0;
 let type = 0; // sitting
 let units = "cm";
 
+let currentStep = 1;
+const totalSteps = 3;
+
+function nextStep(step) {
+  if (validateStep(step)) {
+    document.querySelector(`#step${step}`).classList.remove("active");
+    document.querySelector(`#step${step + 1}`).classList.add("active");
+    document.querySelector(`[data-step="${step + 1}"]`).classList.add("active");
+    currentStep++;
+
+    if (currentStep === 3) {
+      calculateResults();
+    }
+  }
+}
+
+function previousStep(step) {
+  document.querySelector(`#step${step}`).classList.remove("active");
+  document.querySelector(`#step${step - 1}`).classList.add("active");
+  document.querySelector(`[data-step="${step}"]`).classList.remove("active");
+  currentStep--;
+}
+
+function validateStep(step) {
+  const inputs = document
+    .querySelector(`#step${step}`)
+    .querySelectorAll("input, select");
+  let valid = true;
+
+  inputs.forEach((input) => {
+    if (!input.value) {
+      valid = false;
+      input.classList.add("error");
+    } else {
+      input.classList.remove("error");
+    }
+  });
+
+  return valid;
+}
+
+function calculateResults() {
+  // Get all input values
+  const units = document.getElementById("units").value;
+  const height = parseFloat(document.getElementById("height").value);
+  const elbowHeight = parseFloat(document.getElementById("elbowHeight").value);
+  const eyeHeight = parseFloat(document.getElementById("eyeHeight").value);
+  const monitorHeight = parseFloat(
+    document.getElementById("monitorHeight").value
+  );
+
+  // Calculate ideal heights
+  const chairHeight = elbowHeight - 25; // Subtracting for optimal elbow angle
+  const deskHeight = chairHeight + 25; // Adding for optimal arm position
+  const monitorTop = eyeHeight + 15; // Monitor top should be slightly above eye level
+
+  // Display results
+  document.getElementById("chairHeight").textContent = `${chairHeight.toFixed(
+    1
+  )} ${units}`;
+  document.getElementById("deskHeight").textContent = `${deskHeight.toFixed(
+    1
+  )} ${units}`;
+  document.getElementById(
+    "monitorPosition"
+  ).textContent = `La parte de abajo del monitor debe estar a ${(
+    monitorTop - monitorHeight
+  ).toFixed(1)} ${units}`;
+
+  updateDiagram(chairHeight, deskHeight, monitorTop - monitorHeight);
+}
+
+function updateDiagram(chairHeight, deskHeight, monitorBottom) {
+  const diagram = document.querySelector(".ergonomic-diagram");
+  // Clear existing content
+  diagram.innerHTML = "";
+
+  // Add visual representation of the setup
+  // This is a simplified example - you might want to create a more detailed SVG
+  const svg = `
+        <rect x="50" y="${
+          250 - chairHeight
+        }" width="100" height="${chairHeight}" fill="#666" />
+        <rect x="50" y="${
+          250 - deskHeight
+        }" width="200" height="10" fill="#888" />
+        <rect x="200" y="${
+          250 - monitorBottom - 50
+        }" width="80" height="50" fill="#333" />
+    `;
+
+  diagram.innerHTML = svg;
+}
+
+function resetForm() {
+  document.getElementById("ergonomicForm").reset();
+  currentStep = 1;
+
+  // Reset steps
+  document.querySelectorAll(".step-content").forEach((step) => {
+    step.classList.remove("active");
+  });
+  document.querySelectorAll(".step").forEach((step) => {
+    step.classList.remove("active");
+  });
+
+  // Show first step
+  document.querySelector("#step1").classList.add("active");
+  document.querySelector('[data-step="1"]').classList.add("active");
+}
+
 document.getElementById("units").addEventListener("change", (e) => {
   units = e.target.value;
   if (units === "cm") {
@@ -152,3 +263,11 @@ const showDeskHeight = (person_height, type, units) => {
   deskDisplay.innerText = maxHeight.toFixed(1);
   indicator.innerText = maxHeight.toFixed(1);
 };
+
+// Handle unit changes
+document.getElementById("units").addEventListener("change", function (e) {
+  const unitLabels = document.querySelectorAll(".unit-label");
+  unitLabels.forEach((label) => {
+    label.textContent = e.target.value;
+  });
+});

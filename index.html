@@ -1,138 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Desk Height Calculator</title>
+    <title>Calculadora Ergonómica</title>
 </head>
 <body>
-    <main>
-    <h1>Desk Height Calculator</h1>
-    <p class="page__subtitle">Determine the ideal table height for you when you're sitting or standing</p>
-    <hr>
-    <div class="container">
-        <section class="preview">
-        <div class="desk">
+    <main class="container">
+        <h1>Calculadora de Ergonomía</h1>
+        <p class="subtitle">Altura estimada de tu silla, monitor y escritorio para una mejor postura</p>
 
-            <div class="desk__dynamic_part">
-            <div id="desk__top">
-                <svg width="971" height="109" viewBox="0 0 971 109" fill="none" xmlns="http://www.w3.org/2000/svg"
-                class="desk__top">
-                <path
-                    d="M2.55793 81.5526L64.8983 3.62713C66.2267 1.96663 68.2379 1 70.3644 1H896.709C898.794 1 900.77 1.92888 902.099 3.53388L969.186 84.5C970.495 86.0803 970.325 88.313 969.005 89.6484L968.669 99.1842C968.567 102.084 966.693 104.651 963.91 105.473C957.445 107.383 953.095 107.838 946.5 108H19.5C13.2072 107.838 9.84053 107.387 5.58751 105.763C3.04995 104.794 1.5 102.265 1.5 99.5487V88.4325C0.867734 86.8712 0.846179 85.0445 1.5 83.3789C1.75149 82.7382 2.10291 82.1214 2.55793 81.5526Z"
-                    fill="#E6E6E6" />
-                <path
-                    d="M1.5 83V99.5487C1.5 102.265 3.04995 104.794 5.58751 105.763C9.84053 107.387 13.2072 107.838 19.5 108H946.5C953.095 107.838 957.445 107.383 963.91 105.473C966.693 104.651 968.567 102.084 968.669 99.1842L969.186 84.5M969.186 84.5V84.5C970.846 86.5035 970.128 89.5555 967.703 90.4985C962.085 92.6833 958.269 93.4586 953 93.5H16C11.8929 93.5473 8.73514 93.0698 5.2121 91.9102C0.906794 90.4931 -0.27352 85.0919 2.55793 81.5526L64.8983 3.62713C66.2267 1.96663 68.2379 1 70.3644 1H896.709C898.794 1 900.77 1.92888 902.1 3.53388L969.186 84.5Z"
-                    stroke="black" stroke-miterlimit="16" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <div class="desk__control">
-                <div class="desk__control__top">
-                    <div class="desk__control__display" id="desk__control__display"></div>
-                    <button><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-                    </svg>
-                    </button>
-                    <button><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                    </svg>
-                    </button>
-                    <button>1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button>4</button>
-                </div>
-                Autonomous
+        <div class="form-container">
+            <div class="progress-bar">
+                <div class="step active" data-step="1">1</div>
+                <div class="step" data-step="2">2</div>
+                <div class="step" data-step="3">3</div>
+            </div>
+
+            <form id="ergonomicForm">
+                <!-- Paso 1: Medidas Básicas -->
+                <div class="step-content active" id="step1">
+                    <h2 style="margin-bottom: 24px;">Paso 1: Tus medidas</h2>
+                    
+                    <div class="form-group">
+                        <label for="units">Unidad de medida</label>
+                        <select id="units" name="units" disabled>
+                            <option value="cm">Centímetros</option>
+                        </select>
+                    </div>
+
+                    
+                    <div class="form-group">
+                        <label for="height">Tu altura</label>
+                        <input type="number" id="height" name="height" autofocus required>
+                        <span class="unit-label">cm</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="elbowHeight">Altura del suelo al codo (sentado)</label>
+                        <input type="number" id="elbowHeight" name="elbowHeight" required>
+                        <span class="unit-label">cm</span>
+                    </div>
+                    <button type="button" class="next-btn" onclick="nextStep(1)">Siguiente</button>
                 </div>
 
-            </div>
+                <!-- Paso 2: Detalles del Monitor -->
+                <div class="step-content" id="step2">
+                    <h2 style="margin-bottom: 24px;">Paso 2: Configuración del monitor</h2>
+                    <div class="form-group">
+                        <label for="monitorHeight">Altura del monitor (solo pantalla)</label>
+                        <input type="number" id="monitorHeight" name="monitorHeight" required>
+                        <span class="unit-label">cm</span>
 
-            <svg width="775" height="349" viewBox="0 0 775 349" fill="none" xmlns="http://www.w3.org/2000/svg"
-                id="desk__legs" class="desk__legs">
-                <path d="M10.5 348.5L1 0.5H30.5H40L47.5 333.5L40 348.5H10.5Z" fill="white" />
-                <path d="M774.5 0.5L763.5 348.5H736.5L727.5 333.5L736.5 0.5H744.5H774.5Z" fill="white" />
-                <path
-                d="M40 348.5H10.5L1 0.5H30.5M40 348.5L30.5 0.5M40 348.5L47.5 333.5L40 0.5H30.5M736.5 348.5H763.5L774.5 0.5H744.5M736.5 348.5L744.5 0.5M736.5 348.5L727.5 333.5L736.5 0.5H744.5"
-                stroke="black" stroke-miterlimit="16" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eyeHeight">Altura del suelo a los ojos (sentado)</label>
+                        <input type="number" id="eyeHeight" name="eyeHeight" required>
+                        <span class="unit-label">cm</span>
+                    </div>
+                    <button type="button" class="back-btn" onclick="previousStep(2)">Atrás</button>
+                    <button type="button" class="next-btn" onclick="nextStep(2)">Siguiente</button>
+                </div>
 
-            <div class="indicator_height" id="indicator__box">
-            <hr>
-            <div id="indicator">56.5</div>
-            </div>
+                <!-- Paso 3: Resultados -->
+                <div class="step-content" id="step3">
+                    <h2 style="margin-bottom: 24px;">Tu configuración estimada</h2>
+                    <div class="results">
+                        <div class="result-item">
 
-            <svg width="808" height="125" viewBox="0 0 808 125" fill="none" xmlns="http://www.w3.org/2000/svg"
-            class="desk__legs__bottom">
-            <path d="M63.5 2.5H84V10L44.5 124H0.5V110L25 47L63.5 2.5Z" fill="white" />
-            <path
-                d="M84 2.5H63.5L25 47L0.5 110M84 2.5L44.5 110M84 2.5V10L44.5 124M44.5 110H0.5M44.5 110V124M0.5 110V124H44.5"
-                stroke="black" stroke-miterlimit="16" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M721.5 0.5H744L780 46L807 110V123.5H763.5L721.5 10V0.5Z" fill="white" />
-            <path
-                d="M721.5 0.5H744L780 46L807 110M721.5 0.5L763.5 110M721.5 0.5V10L763.5 123.5M763.5 110H807M763.5 110V123.5M807 110V123.5H763.5"
-                stroke="black" stroke-miterlimit="16" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-        </div>
-        </section>
+                            <h3>Altura de la Silla</h3>
+                            <p id="chairHeight">--</p>
+                        </div>
+                        <div class="result-item">
+                            <h3>Altura del Escritorio</h3>
+                            <p id="deskHeight">--</p>
+                        </div>
+                        <div class="result-item">
+                            <h3>Altura del Monitor</h3>
+                            <p id="monitorPosition">--</p>
+                        </div>
+                    </div>
 
-        <section class="form">
-        <div class="form_group">
-            <label for="type">Inches/cm</label>
-            <select id="units">
-            <option selected value="cm">Cm</option>
-            <option value="inches">Inches</option>
-            </select>
+                    <p style="margin-top: 48px; margin-bottom: 24px;">
+                        De esta manera, tus pies descansan sobre el suelo y tus brazos descansan sobre el escritorio estando en un rango ergonómico de entre 90 y 100 grados. Y el monitor está a una altura cómoda para tus ojos, así no tensas tu cuello.
+                    </p>
+
+                    <!-- <div class="setup-diagram">
+                        <svg viewBox="0 0 400 300" class="ergonomic-diagram">
+                        </svg>
+                    </div> -->
+                    <button type="button" class="back-btn" onclick="previousStep(3)">Atrás</button>
+                    <button type="button" class="recalculate-btn" onclick="resetForm()">Recalcular</button>
+                </div>
+            </form>
         </div>
-        <div class="form_group">
-            <label for="height">Your height (<span id="unit">cm</span>)</label>
-            <input type="number" id="height" name="height" min="150" max="205" value="150" />
-            <select name="height-in" id="height-in">
-            <option value="5'0">5'0"</option>
-            <option value="5'1">5'1"</option>
-            <option value="5'2">5'2"</option>
-            <option value="5'3">5'3"</option>
-            <option value="5'4">5'4"</option>
-            <option value="5'5">5'5"</option>
-            <option value="5'6">5'6"</option>
-            <option value="5'7">5'7"</option>
-            <option value="5'8">5'8"</option>
-            <option value="5'9">5'9"</option>
-            <option value="5'10">5'10"</option>
-            <option value="5'11">5'11"</option>
-            <option value="6'0">6'0"</option>
-            <option value="6'1">6'1"</option>
-            <option value="6'2">6'2"</option>
-            <option value="6'3">6'3"</option>
-            <option value="6'4">6'4"</option>
-            <option value="6'5">6'5"</option>
-            <option value="6'6">6'6"</option>
-            <option value="6'7">6'7"</option>
-            <option value="6'8">6'8"</option>
-            </select>
-        </div>
-        <div class="form_group">
-            <label for="type">Position at desk</label>
-            <select id="type">
-            <option selected value="sitting">Sitting</option>
-            <option value="standing">Standing</option>
-            </select>
-        </div>
-        </section>
-    </div>
-    </div>
+    </main>
 
     <footer>
-        <img src="/assets/viki-code.jpeg" alt="Viki Code" width="80">
-        <div>
-            <p>Author: Viki Code</p>
-            <a href="https://vikicode.me/" target="_blank" rel="noreferrer">vikicode.me</a>
-        </div>
+        <p>Estimación aproximada basado en pautas ergonómicas para una configuración óptima del espacio de trabajo. Recuerde consultar a un profesional para una configuración más precisa.</p>
     </footer>
 
-    </main>
+
+    <script src="scripts.js"></script>
 </body>
-<script src="scripts.js"></script>
 </html>
